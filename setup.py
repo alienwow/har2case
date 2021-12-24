@@ -8,7 +8,7 @@ from setuptools import Command, find_packages, setup
 
 about = {}
 here = os.path.abspath(os.path.dirname(__file__))
-with io.open(os.path.join(here, 'har2case', '__about__.py'), encoding='utf-8') as f:
+with io.open(os.path.join(here, 'har2case2', '__about__.py'), encoding='utf-8') as f:
     exec(f.read(), about)
 
 with io.open("README.md", encoding='utf-8') as f:
@@ -87,7 +87,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'har2case=har2case.cli:main'
+            'har2case2=har2case2.cli:main'
         ]
     },
     # $ setup.py upload support.

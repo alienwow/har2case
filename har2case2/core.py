@@ -4,8 +4,8 @@ import logging
 import os
 import sys
 
-from har2case import utils
-from har2case.compat import urlparse
+from har2case2 import utils
+from har2case2.compat import urlparse
 
 try:
     from json.decoder import JSONDecodeError

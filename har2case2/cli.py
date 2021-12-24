@@ -2,10 +2,10 @@
 
 Usage:
     # convert to JSON format testcase
-    >>> har2case demo.har
+    >>> har2case2 demo.har
 
     # convert to YAML format testcase
-    >>> har2case demo.har -2y
+    >>> har2case2 demo.har -2y
 
 """
 
@@ -13,8 +13,8 @@ import argparse
 import logging
 import sys
 
-from har2case.__about__ import __description__, __version__
-from har2case.core import HarParser
+from har2case2.__about__ import __description__, __version__
+from har2case2.core import HarParser
 
 
 def main():

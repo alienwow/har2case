@@ -2,7 +2,7 @@ import json
 import os
 import unittest
 
-from har2case import utils
+from har2case2 import utils
 
 
 class TestUtils(unittest.TestCase):

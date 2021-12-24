@@ -4,7 +4,7 @@ import logging
 import sys
 
 import yaml
-from har2case.compat import bytes, ensure_ascii, str, unquote
+from har2case2.compat import bytes, ensure_ascii, str, unquote
 
 
 def load_har_log_entries(file_path):

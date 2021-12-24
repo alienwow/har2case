@@ -1,7 +1,7 @@
 import os
 
-from har2case.utils import load_har_log_entries
-from har2case.core import HarParser
+from har2case2.utils import load_har_log_entries
+from har2case2.core import HarParser
 from tests.test_utils import TestUtils
 
 

@@ -1,4 +1,4 @@
-__title__ = 'har2case'
+__title__ = 'har2case2'
 __description__ = 'fork from https://github.com/HttpRunner/har2case. Convert HAR(HTTP Archive) to YAML/JSON testcases for HttpRunner.'
 __url__ = 'https://github.com/alienwow/har2case'
 __version__ = '0.3.2'
