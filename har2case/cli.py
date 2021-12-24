@@ -42,6 +42,11 @@ def main():
     parser.add_argument(
         '--exclude',
         help="Specify exclude keyword, url that includes exclude string will be ignored, multiple keywords can be joined with '|'")
+    parser.add_argument(
+        '--filter-header', help="Specify filter keyword, only header include filter string will be converted.")
+    parser.add_argument(
+        '--exclude-method',
+        help="Specify exclude keyword, method that includes exclude string will be ignored, multiple keywords can be joined with '|'")
 
     args = parser.parse_args()
 
@@ -57,9 +62,14 @@ def main():
         logging.error("HAR file not specified.")
         sys.exit(1)
 
+    logging.info(args.filter)
+    logging.info(args.exclude)
+    logging.info(args.filter_header)
+    logging.info(args.exclude_method)
+    
     output_file_type = "YML" if args.to_yaml else "JSON"
     HarParser(
-        har_source_file, args.filter, args.exclude
+        har_source_file, args.filter, args.exclude, args.filter_header, args.exclude_method
     ).gen_testcase(output_file_type, args.fmt_version.lower())
 
     return 0

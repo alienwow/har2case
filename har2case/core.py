@@ -32,13 +32,25 @@ IGNORE_REQUEST_HEADERS = [
     ":path"
 ]
 
+IGNOTE_REQUEST_METHOD = [
+    "connect",
+    "options"
+]
+
+NEED_REQUEST_HEADERS = [
+    "authorization",
+    "content-type",
+    "x-xt-client-info"
+]
 
 class HarParser(object):
 
-    def __init__(self, har_file_path, filter_str=None, exclude_str=None):
+    def __init__(self, har_file_path, filter_str=None, exclude_str=None, filter_header_str=None, exclude_method_str=None):
         self.har_file_path = har_file_path
         self.filter_str = filter_str
         self.exclude_str = exclude_str or ""
+        self.filter_header_str = filter_header_str or ""
+        self.exclude_method_str = exclude_method_str or ""
 
     def __make_request_url(self, teststep_dict, entry_json):
         """ parse HAR entry request url and queryString, and make teststep url and params
@@ -78,10 +90,10 @@ class HarParser(object):
         parsed_object = urlparse.urlparse(url)
         if request_params:
             parsed_object = parsed_object._replace(query='')
-            teststep_dict["request"]["url"] = parsed_object.geturl()
+            teststep_dict["request"]["url"] = parsed_object.path # parsed_object.geturl()
             teststep_dict["request"]["params"] = request_params
         else:
-            teststep_dict["request"]["url"] = url
+            teststep_dict["request"]["url"] = parsed_object.path # url
 
         teststep_dict["name"] = parsed_object.path
 
@@ -120,11 +132,15 @@ class HarParser(object):
 
         """
         teststep_headers = {}
+        filter_header_str_list = self.filter_header_str.lower().split("|")
+
         for header in entry_json["request"].get("headers", []):
             if header["name"].lower() in IGNORE_REQUEST_HEADERS:
                 continue
 
-            teststep_headers[header["name"]] = header["value"]
+            # 这里添加header 过滤逻辑
+            if header["name"].lower() in filter_header_str_list:
+                teststep_headers[header["name"]] = header["value"]
 
         if teststep_headers:
             teststep_dict["request"]["headers"] = teststep_headers
@@ -322,14 +338,26 @@ class HarParser(object):
 
             return False
 
+        def is_exclude_method(method, exclude_method_str):
+            exclude_method_str_list = exclude_method_str.lower().split("|")
+            if method.lower() in exclude_method_str_list:
+                return True
+            return False
+
         teststeps = []
         log_entries = utils.load_har_log_entries(self.har_file_path)
+
         for entry_json in log_entries:
             url = entry_json["request"].get("url")
             if self.filter_str and self.filter_str not in url:
                 continue
 
             if is_exclude(url, self.exclude_str):
+                continue
+
+            # 过滤不要的请求
+            method = entry_json["request"].get("method")
+            if is_exclude_method(method, self.exclude_method_str):
                 continue
 
             if fmt_version == "v1":
@@ -350,6 +378,7 @@ class HarParser(object):
         logging.debug("Extract info from HAR file and prepare for testcase.")
 
         config = self._prepare_config()
+
         teststeps = self._prepare_teststeps(fmt_version)
 
         if fmt_version == "v1":
