@@ -35,7 +35,7 @@ def main():
         help="Convert to YAML format, if not specified, convert to JSON format by default.")
     parser.add_argument(
         '-fmt', '--format',
-        dest='fmt_version', default='v1',
+        dest='fmt_version', default='v2',
         help="Specify YAML/JSON testcase format version, v2 corresponds to HttpRunner 2.2.0+.")
     parser.add_argument(
         '--filter', help="Specify filter keyword, only url include filter string will be converted.")
