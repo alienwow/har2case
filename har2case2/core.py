@@ -90,10 +90,10 @@ class HarParser(object):
         parsed_object = urlparse.urlparse(url)
         if request_params:
             parsed_object = parsed_object._replace(query='')
-            teststep_dict["request"]["url"] = parsed_object.path # parsed_object.geturl()
+            teststep_dict["request"]["url"] = parsed_object.geturl()
             teststep_dict["request"]["params"] = request_params
         else:
-            teststep_dict["request"]["url"] = parsed_object.path # url
+            teststep_dict["request"]["url"] = url
 
         teststep_dict["name"] = parsed_object.path
 
